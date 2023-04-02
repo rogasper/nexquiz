@@ -15,6 +15,7 @@ function page() {
   const [isError, setIsError] = useState(false);
   const [show, setShow] = useState(false);
   const [selected, setSelected] = useState(null);
+  const [value, setValue] = useState();
   const [currentSelected, setCurrentSelected] = useState();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const { data, setData, setSoal, soal } = useContext(DataContext);
@@ -27,6 +28,7 @@ function page() {
 
   const fetchingData = async (item) => {
     setIsLoading(true);
+    setValue(item);
     const res = await fetch("/api/generateQuestion", {
       method: "POST",
       headers: {
@@ -99,7 +101,7 @@ function page() {
           ) : isLoading === true ? (
             <Loader />
           ) : isError === true ? (
-            <Regenerate />
+            <Regenerate value={value} fetchingData={fetchingData} />
           ) : (
             <div className="question-section mt-4 rounded-lg p-6 dark:bg-slate-700 bg-slate-300 h-96">
               <div className="loading flex justify-center items-center h-full"></div>
