@@ -12,33 +12,37 @@ const buatSoal = async (teks) => {
   ----
     ${teks}
   ----`;
-  try {
-    const response = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: text,
-      temperature: 0.86,
-      max_tokens: 3000,
-      top_p: 1,
-      frequency_penalty: 1,
-      presence_penalty: 1,
-    });
 
-    return response.data.choices[0].text;
-  } catch (err) {
-    console.error(err);
-  }
+  const response = await openai.createCompletion({
+    model: "text-davinci-003",
+    prompt: text,
+    temperature: 0.86,
+    max_tokens: 3000,
+    top_p: 1,
+    frequency_penalty: 1,
+    presence_penalty: 1,
+  });
+
+  return response.data.choices[0].text;
 };
 
 export default async function handler(req, res) {
   switch (req.method) {
     case "POST":
-      const { teks } = req.body;
-      const prompt = await buatSoal(teks);
-      const data = desctructureText(prompt);
+      try {
+        const { teks } = req.body;
+        const prompt = await buatSoal(teks);
+        const data = desctructureText(prompt);
 
-      res.status(200).json({
-        data,
-      });
+        res.status(200).json({
+          data,
+        });
+      } catch (err) {
+        res.status(500).json({
+          data: "",
+          message: err.message,
+        });
+      }
       break;
     case "GET":
       res.status(200).json({

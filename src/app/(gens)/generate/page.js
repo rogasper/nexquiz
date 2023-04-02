@@ -7,11 +7,12 @@ import SelecttableText from "../../../components/SelecttableText";
 import Loader from "../../../components/Loader";
 import Regenerate from "../../../components/Regenerate";
 import Question from "../../../components/Question";
+import { Toaster, toast } from "react-hot-toast";
 
 function page() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(true);
+  const [isError, setIsError] = useState(false);
   const [show, setShow] = useState(false);
   const [selected, setSelected] = useState(null);
   const [currentSelected, setCurrentSelected] = useState();
@@ -35,7 +36,12 @@ function page() {
     });
     setIsLoading(false);
     const data = await res.json();
-    setSoal(data.data);
+    if (data.data !== "") {
+      setSoal(data.data);
+    } else {
+      setIsError(true);
+      toast.error(data.message);
+    }
   };
   useEffect(() => {
     if (!data) {
@@ -93,23 +99,17 @@ function page() {
           ) : isLoading === true ? (
             <Loader />
           ) : isError === true ? (
+            <Regenerate />
+          ) : (
             <div className="question-section mt-4 rounded-lg p-6 dark:bg-slate-700 bg-slate-300 h-96">
               <div className="loading flex justify-center items-center h-full"></div>
             </div>
-          ) : (
-            <Regenerate />
           )}
         </div>
       </div>
+      <Toaster position="bottom-right" reverseOrder={false} />
     </div>
   );
 }
 
 export default page;
-
-// const getApi = async () => {
-//   const response = await fetch("/api/hello");
-//   console.log(response.body);
-// };
-
-// getApi();
