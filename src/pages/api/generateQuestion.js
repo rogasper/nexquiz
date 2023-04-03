@@ -46,7 +46,7 @@ export default async function handler(req, res) {
       break;
     case "GET":
       res.status(200).json({
-        message: "ini generate quiz",
+        message: "update environment",
       });
       break;
     default:
