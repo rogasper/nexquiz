@@ -16,6 +16,7 @@ export const desctructureText = (teks) => {
   let soal = "";
   let jawaban = "";
   let isCorrect = false;
+  let cekSoal = [];
 
   for (let i = 0; i < filterArray.length; i++) {
     if (i % 6 === 0) {
@@ -43,6 +44,30 @@ export const desctructureText = (teks) => {
       }
     }
   }
-
+  cekSoal = cekJawaban(result);
+  if (cekSoal.length > 0) {
+    result = [];
+    return result;
+  }
   return result;
+};
+
+// cek ada jawaban true tidak
+const cekJawaban = (questions) => {
+  const tidakAdaJawabanBenar = [];
+  for (let index = 0; index < questions.length; index++) {
+    let isCorrectAnswerFound = false;
+    for (let cek = 0; cek < questions[index].opsiJawaban.length; cek++) {
+      if (questions[index].opsiJawaban[cek].isCorrect === true) {
+        isCorrectAnswerFound = true;
+        console.log("Soal " + (index + 1) + " memiliki jawaban yang benar.");
+        break; // menghentikan perulangan setelah menemukan jawaban yang benar
+      }
+    }
+    if (!isCorrectAnswerFound) {
+      tidakAdaJawabanBenar.push(index);
+    }
+  }
+
+  return tidakAdaJawabanBenar;
 };

@@ -1,12 +1,15 @@
 import React from 'react'
 
 function Question({ questions, manipulation }) {
-    const { currentQuestion, setCurrentQuestion, show, setShow, currentSelected, selected, setCurrentSelected, setSelected } = manipulation
-
-    console.log(questions);
+    const { currentQuestion, setCurrentQuestion, show, setShow, currentSelected, selected, setCurrentSelected, setSelected, scores, setScores } = manipulation
 
     const showAnswer = () => {
         show == false ? setShow(true) : setShow(false)
+
+        if (questions[currentQuestion].opsiJawaban[selected].isCorrect) {
+            // console.log("ANDA BENAR");
+            setScores(scores + 1)
+        }
     }
     const nextQuestions = () => {
         const nextQuestion = currentQuestion + 1

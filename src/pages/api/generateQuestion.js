@@ -1,46 +1,89 @@
 import { Configuration, OpenAIApi } from "openai";
 import { desctructureText } from "../../helpers/desctructure";
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// const configuration = new Configuration({
+//   apiKey: apiKey,
+// });
 
-const openai = new OpenAIApi(configuration);
+// const openai = new OpenAIApi(configuration);
 
-const buatSoal = async (teks) => {
-  const text = `buatlah beberapa soal pilihan ganda dari teks dengan tipe soal analisis dan evaluasi. dengan format: { 1. ini pertanyaaan?; a. jawaban1; b. jawaban2; c. jawaban3 (correct); d. jawaban4; e.jawaban5; }
-  ----
-    ${teks}
-  ----`;
+const buatSoal = async (teks, apiKey, isCode) => {
+  let text;
+  if (!isCode) {
+    text = `buatlah 2 soal pilihan ganda dari teks dibawah. dengan format: { 1. ini pertanyaaan?; a. jawaban1; b. jawaban2; c. jawaban3 (correct); d. jawaban4; e.jawaban5; }
+    --
+      ${teks}
+    --`;
+  } else {
+    text = `buatlah 5 soal pilihan ganda dari teks dibawah. dengan format: { 1. ini pertanyaaan?; a. jawaban1; b. jawaban2; c. jawaban3 (correct); d. jawaban4; e.jawaban5; }
+    --
+      ${teks}
+    --`;
+  }
+  console.log({ apiKey });
+  try {
+    const response = await fetch("https://api.openai.com/v1/completions", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: "text-davinci-003",
+        prompt: text,
+        temperature: 0.86,
+        max_tokens: 3000,
+        top_p: 1,
+        frequency_penalty: 1,
+        presence_penalty: 1,
+      }),
+    });
+    const json = await response.json();
+    return json.choices[0].text;
+  } catch (error) {
+    console.error(error);
+  }
 
-  const response = await openai.createCompletion({
-    model: "text-davinci-003",
-    prompt: text,
-    temperature: 0.86,
-    max_tokens: 3000,
-    top_p: 1,
-    frequency_penalty: 1,
-    presence_penalty: 1,
-  });
+  // const text = `buatlah 2 soal pilihan ganda dari teks dibawah. dengan format: { 1. ini pertanyaaan?; a. jawaban1; b. jawaban2; c. jawaban3 (correct); d. jawaban4; e.jawaban5; }
+  // --
+  //   ${teks}
+  // --`;
 
-  return response.data.choices[0].text;
+  // const response = await openai.createCompletion({
+  //   model: "text-davinci-003",
+  //   prompt: text,
+  //   temperature: 0.86,
+  //   max_tokens: 3000,
+  //   top_p: 1,
+  //   frequency_penalty: 1,
+  //   presence_penalty: 1,
+  // });
+
+  // return response.data.choices[0].text;
 };
 
 export default async function handler(req, res) {
   switch (req.method) {
     case "POST":
       try {
-        const { teks } = req.body;
-        const prompt = await buatSoal(teks);
+        const { teks, apiKey, isCode } = req.body;
+        const prompt = await buatSoal(teks, apiKey, isCode);
         const data = desctructureText(prompt);
 
+        if (data.length === 0) {
+          res.status(500).json({
+            data: "ULANG",
+            message: "ULANG REGENERATE QUESTION",
+          });
+        }
         res.status(200).json({
-          data,
+          data: data,
         });
       } catch (err) {
         res.status(500).json({
           data: "",
-          message: err.message,
+          message: "API KEY TIDAK VALID SILAHKAN DIGANTI",
         });
       }
       break;

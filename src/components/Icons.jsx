@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Sun, Moon, HelpCircle, Loader2, RefreshCw } from "lucide-react";
+import { ChevronLeft, ChevronRight, Sun, Moon, HelpCircle, Loader2, RefreshCw, Expand, Minimize } from "lucide-react";
 
 export const Icons = {
     ChevronLeft,
@@ -7,7 +7,9 @@ export const Icons = {
     Moon,
     HelpCircle,
     Loader2,
-    RefreshCw
+    RefreshCw,
+    Expand,
+    Minimize
 }
 
 export default Icons;
