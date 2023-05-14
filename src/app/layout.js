@@ -11,7 +11,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-slate-50 dark:bg-slate-900 antialiased">
+      <body className="min-h-screen antialiased bg-slate-50 dark:bg-slate-900">
         <Providers>
           <Navbar />
           {children}

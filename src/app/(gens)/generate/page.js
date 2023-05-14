@@ -23,6 +23,7 @@ function page() {
   const [scores, setScores] = useState(0);
   const [apiKey, setApiKey] = useState(null);
   const [totalScore, setTotalScore] = useState(0);
+  const [showNilai, setShowNilai] = useState(false);
   const [currentSelected, setCurrentSelected] = useState();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const { data, setData, setSoal, soal, isCode, language } =
@@ -92,34 +93,37 @@ function page() {
   }, [soal]);
 
   return (
-    <div className="wrapper -mt-5">
-      <div className="container mx-auto px-3 mb-3 grid grid-cols-2">
+    <div className="-mt-5 wrapper">
+      <div className="container grid grid-cols-2 px-3 mx-auto mb-3">
         <div>
           <button
-            className="text-white bg-purple-700 hover:bg-purple-800 dark:bg-purple-600 dark:hover:bg-purple-700 px-3 py-1 rounded-md"
+            className="px-3 py-1 text-white bg-purple-700 rounded-md hover:bg-purple-800 dark:bg-purple-600 dark:hover:bg-purple-700"
             onClick={backToHome}
           >
             Kembali
           </button>
           <button
-            className="ml-3 text-white bg-indigo-700 hover:bg-indigo-800 dark:bg-indigo-600 dark:hover:bg-indigo-700 px-3 py-1 rounded-md"
+            className="px-3 py-1 ml-3 text-white bg-indigo-700 rounded-md hover:bg-indigo-800 dark:bg-indigo-600 dark:hover:bg-indigo-700"
             onClick={() => setShowModal(true)}
           >
             Set Api Key
           </button>
-          <button className="ml-3 text-white bg-emerald-700 hover:bg-emerald-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 px-3 py-1 rounded-md">
+          <button
+            className="px-3 py-1 ml-3 text-white rounded-md bg-emerald-700 hover:bg-emerald-800 dark:bg-emerald-600 dark:hover:bg-emerald-700"
+            onClick={() => setShowNilai(true)}
+          >
             Selesai
           </button>
         </div>
         <div className="text-right">
-          <h3 className="font-medium text-2xl">
+          <h3 className="text-2xl font-medium">
             Skor Anda: {scores}/{totalScore}
           </h3>
         </div>
       </div>
-      <div className="container mx-auto grid lg:grid-cols-2 sm:grid-cols-1 w-full mx-4 gap-4">
+      <div className="container grid w-full gap-4 mx-4 mx-auto lg:grid-cols-2 sm:grid-cols-1">
         <div className="teks">
-          <h1 className="text-2xl text-slate-900 dark:text-slate-100 font-bold uppercase ml-3 mb-5">
+          <h1 className="mb-5 ml-3 text-2xl font-bold uppercase text-slate-900 dark:text-slate-100">
             Teks
           </h1>
           {isCode == true ? (
@@ -147,8 +151,8 @@ function page() {
             </div>
           )}
         </div>
-        <div className="soal mr-3 sm:ml-3">
-          <h1 className="text-2xl text-slate-900 dark:text-slate-100 font-bold uppercase mb-5">
+        <div className="mr-3 soal sm:ml-3">
+          <h1 className="mb-5 text-2xl font-bold uppercase text-slate-900 dark:text-slate-100">
             Soal
           </h1>
           <div className="keterangan">
@@ -175,14 +179,14 @@ function page() {
           ) : isLoading === true ? (
             <Loader />
           ) : isCode === true ? (
-            <div className="question-section mt-4 rounded-lg p-6 dark:bg-slate-700 bg-slate-300 h-96">
-              <div className="loading flex justify-center items-center h-full">
+            <div className="p-6 mt-4 rounded-lg question-section dark:bg-slate-700 bg-slate-300 h-96">
+              <div className="flex items-center justify-center h-full loading">
                 <button
                   className="flex items-center bg-slate-400 dark:bg-slate-600 px-6 py-2.5 rounded-lg dark:hover:bg-slate-800 hover:bg-slate-500 hover:text-slate-300"
                   onClick={handleClickGenerateCode}
                 >
                   <Icons.RefreshCw size={"1.125rem"} />{" "}
-                  <span className="text-lg ml-2 uppercase ">
+                  <span className="ml-2 text-lg uppercase ">
                     Generate Question
                   </span>
                 </button>
@@ -191,8 +195,8 @@ function page() {
           ) : isError === true ? (
             <Regenerate value={value} fetchingData={fetchingData} />
           ) : (
-            <div className="question-section mt-4 rounded-lg p-6 dark:bg-slate-700 bg-slate-300 h-96">
-              <div className="loading flex justify-center items-center h-full"></div>
+            <div className="p-6 mt-4 rounded-lg question-section dark:bg-slate-700 bg-slate-300 h-96">
+              <div className="flex items-center justify-center h-full loading"></div>
             </div>
           )}
         </div>
@@ -213,6 +217,28 @@ function page() {
           <Button onClick={onSetApiKey}>Set</Button>
           <Button color="gray" onClick={() => setShowModal(false)}>
             Decline
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal show={showNilai} onClose={() => setShowNilai(false)}>
+        <Modal.Body>
+          <div className="p-5 space-y-6">
+            <h1 className="text-3xl font-bold text-center uppercase">
+              Nilai Anda
+            </h1>
+            <h3 className="text-5xl font-extrabold text-center uppercase">
+              {scores === 0 && totalScore === 0
+                ? 0
+                : ((scores / totalScore) * 100).toFixed(2)}
+            </h3>
+            <p className="font-medium text-center">
+              🔥🔥Tetap semangat dan teruslah belajar🚀
+            </p>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={backToHome} className="w-full">
+            Home
           </Button>
         </Modal.Footer>
       </Modal>

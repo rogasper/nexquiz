@@ -10,7 +10,7 @@ import { desctructureText } from "../../helpers/desctructure";
 const buatSoal = async (teks, apiKey, isCode) => {
   let text;
   if (!isCode) {
-    text = `buatlah 2 soal pilihan ganda dari teks dibawah. dengan format: { 1. ini pertanyaaan?; a. jawaban1; b. jawaban2; c. jawaban3 (correct); d. jawaban4; e.jawaban5; }
+    text = `buatlah 3 soal pilihan ganda dari teks dibawah. dengan format: { 1. ini pertanyaaan?; a. jawaban1; b. jawaban2; c. jawaban3 (correct); d. jawaban4; e.jawaban5; }
     --
       ${teks}
     --`;

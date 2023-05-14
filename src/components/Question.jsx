@@ -28,14 +28,14 @@ function Question({ questions, manipulation }) {
         }
     }
     return (
-        <div className="question-section rounded-lg p-6 dark:bg-slate-700 bg-slate-300">
-            <div className="question-text mb-6">
-                <h1 className='text-2xl uppercase pb-3'>Soal ke {currentQuestion + 1} dari {questions.length}</h1>
+        <div className="p-6 rounded-lg question-section dark:bg-slate-700 bg-slate-300">
+            <div className="mb-6 question-text">
+                <h1 className='pb-3 text-2xl uppercase'>Soal ke {currentQuestion + 1} dari {questions.length}</h1>
                 <h3 className="text-lg">
                     {questions[currentQuestion].soal}
                 </h3>
             </div>
-            <div className="answer-section flex flex-col">
+            <div className="flex flex-col answer-section">
                 {questions[currentQuestion].opsiJawaban.map((answerOption, index) => {
                     if (answerOption.isCorrect === true && show === true) {
                         return (<button className={`text-left bg-green-400 dark:bg-green-600 dark:hover:bg-green-800 hover:bg-green-700 hover:text-green-300 px-6 py-2.5 rounded-md mb-2`} key={index}>
@@ -48,7 +48,7 @@ function Question({ questions, manipulation }) {
                     </button>)
                 })}
             </div>
-            <div className="add-button flex justify-between mt-3">
+            <div className="flex justify-between mt-3 add-button">
                 {selected !== null ? show === true ? <div></div> : <button onClick={showAnswer}>Kirim</button> : <div></div>}
                 <div className="next-back">
                     {show === true ? currentQuestion + 1 >= questions.length ? <div></div> : <button onClick={nextQuestions}>Next</button> : <div></div>}
