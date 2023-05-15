@@ -20,7 +20,7 @@ const buatSoal = async (teks, apiKey, isCode) => {
       ${teks}
     --`;
   }
-  console.log({ apiKey });
+  // console.log({ apiKey });
   try {
     const response = await fetch("https://api.openai.com/v1/completions", {
       method: "POST",
@@ -76,10 +76,11 @@ export default async function handler(req, res) {
             data: "ULANG",
             message: "ULANG REGENERATE QUESTION",
           });
+        } else {
+          res.status(200).json({
+            data: data,
+          });
         }
-        res.status(200).json({
-          data: data,
-        });
       } catch (err) {
         res.status(500).json({
           data: "",
