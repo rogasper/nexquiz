@@ -82,10 +82,18 @@ export default async function handler(req, res) {
           });
         }
       } catch (err) {
-        res.status(500).json({
-          data: "",
-          message: "API KEY TIDAK VALID SILAHKAN DIGANTI",
-        });
+        console.log(err.status);
+        if (err.status === 504) {
+          res.status(504).json({
+            data: "",
+            message: "TIMEOUT COBALAH BEBERAPA SAAT LAGI",
+          });
+        } else {
+          res.status(500).json({
+            data: "",
+            message: "API KEY TIDAK VALID SILAHKAN DIGANTI",
+          });
+        }
       }
       break;
     case "GET":
